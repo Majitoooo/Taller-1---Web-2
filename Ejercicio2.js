@@ -28,39 +28,27 @@ let products = [
         product_price: 80000,
         product_quantity: 104 
     }
-]
+];
 
-//Map
-let productsWithDollars = products.map((product) => {
+const sumaPrecios = products.reduce((acumulador, producto) => {
     return {
-        ...product,
-        product_price_usd: product.product_price / 4000
+      totalPrice: acumulador.totalPrice + producto.product_price, 
+      totalQuantity: acumulador.totalQuantity + producto.product_quantity 
+    };
+  }, { totalPrice: 0, totalQuantity: 0 });
+
+const mostExpensiveProduct = products.sort((a, b) => b.product_price - a.product_price)[0];
+
+const resultado = {
+    ...sumaPrecios, 
+    mostExpensiveProduct: {
+      product_name: mostExpensiveProduct.product_name,
+      product_price: mostExpensiveProduct.product_price,
+      product_quantity: mostExpensiveProduct.product_quantity
     }
-})
-
-//Filter
-let productsWithPrinceGreaterThan60 = products.filter((product) => {
-    return product.product_price > 60000
-})
-
-//Reduce
-let stockValue = products.reduce( function(accumulator, product) {
-    return accumulator + (product.product_price * product.product_quantity)
-}, 0)
-
-console.log('Productos', products)
-console.log('Productos con dólares', productsWithDollars)
-console.log('Productos con precio mayor a 60.000', productsWithPrinceGreaterThan60)
-console.log('Valor total del stock', stockValue)
-
-let sumaPrecios = products.reduce(function(accumulador, producto) {
-    return accumulador + producto.product_price
-}, 0)
-
-console.log("------------")
-
-
-console.log(sumaPrecios)
+  };
+  
+  console.log(resultado);
 
 /** Expected result: 
  * // { totalPrice: 170, totalQuantity: 10, mostExpensiveProduct: { product_name: "Chaqueta", product_price: 160000, product_quantity: 44 } }
